@@ -1,0 +1,35 @@
+# Defines the services for Render
+
+# 1. Define the MySQL Database
+databases:
+  - name: foodshare-mysql # Name for the database service
+    databaseName: foodshare_db # The actual database name
+    user: foodshare_user # The user
+    plan: free # Use Render's free tier
+
+# 2. Define the Spring Boot Backend Web Service
+services:
+  - type: web # It's a web service
+    name: foodshare-backend # Name for the backend service
+    runtime: docker # Build from a Dockerfile
+    repo: https://github.com/33074/foodshare-clean.git # Your repo
+    branch: main
+    dockerfilePath: ./foodshare-backend/Dockerfile # Path to the Dockerfile
+    plan: free # Use Render's free tier
+    healthCheckPath: /actuator/health # Health check endpoint
+    envVars: # Environment variables
+      - key: SPRING_DATASOURCE_URL
+        # Use 'fromDatabase' to automatically get the internal connection URL
+        fromDatabase:
+          name: foodshare-mysql
+          property: internalConnectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: foodshare-mysql
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: foodshare-mysql
+          property: password
+      - key: JWT_SECRET_KEY
+        sync: false # Set this value manually in the Render dashboard for security
