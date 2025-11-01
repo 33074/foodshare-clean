@@ -2,26 +2,26 @@
 
 # 1. Define the MySQL Database
 databases:
-  - name: foodshare-mysql
+  - name: foodshare-mysql # This is the logical name
     databaseName: foodshare_db
     user: foodshare_user
-    plan: free
+    plan: free 
 
 # 2. Define the Spring Boot Backend Web Service
 services:
-  - type: web
-    name: foodshare-backend
-    runtime: docker
-    repo: https://github.com/33074/foodshare-clean.git
+  - type: web 
+    name: foodshare-backend # This is the logical name
+    runtime: docker 
+    repo: https://github.com/33074/foodshare-clean.git 
     branch: main
-    dockerContext: ./foodshare-backend
-    dockerfilePath: ./foodshare-backend/Dockerfile
+    dockerContext: ./foodshare-backend 
+    dockerfilePath: ./foodshare-backend/Dockerfile 
     plan: free
     healthCheckPath: /actuator/health
-    envVars:
+    envVars: 
       # --- THIS IS THE FIX ---
-      # This syntax IS correct for Render.
-      # It builds the URL string by injecting the host, port, and database name.
+      # Manually build the JDBC URL using the other 'fromDatabase' properties.
+      # This is more reliable than 'internalConnectionString'.
       - key: SPRING_DATASOURCE_URL
         value: jdbc:mysql://${foodshare-mysql.host}:${foodshare-mysql.port}/${foodshare-mysql.database}?useSSL=false&allowPublicKeyRetrieval=true
       - key: SPRING_DATASOURCE_USERNAME
