@@ -2,25 +2,28 @@
 
 # 1. Define the MySQL Database
 databases:
-  - name: foodshare-mysql # Name for the database service
-    databaseName: foodshare_db # The actual database name
-    user: foodshare_user # The user
-    plan: free # Use Render's free tier
+  - name: foodshare-mysql
+    databaseName: foodshare_db
+    user: foodshare_user
+    plan: free
 
 # 2. Define the Spring Boot Backend Web Service
 services:
-  - type: web # It's a web service
-    name: foodshare-backend # Name for the backend service
-    runtime: docker # Build from a Dockerfile
-    repo: https://github.com/33074/foodshare-clean.git # Your repo
+  - type: web
+    name: foodshare-backend
+    runtime: docker
+    repo: https://github.com/33074/foodshare-clean.git
     branch: main
-    dockerfilePath: ./foodshare-backend/Dockerfile # Path to the Dockerfile
-    plan: free # Use Render's free tier
-    healthCheckPath: /actuator/health # Health check endpoint
-    envVars: # Environment variables
-      # --- THIS IS THE FIX ---
+    # --- THIS IS THE FIX ---
+    # Set the build context to the backend's subfolder
+    dockerContext: ./foodshare-backend 
+    # The Dockerfile path is now relative to the context
+    dockerfilePath: Dockerfile 
+    # --- END FIX ---
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
       - key: SPRING_DATASOURCE_URL
-        # We build the JDBC URL manually, using the service name 'foodshare-mysql' as the host.
         value: jdbc:mysql://foodshare-mysql:3306/foodshare_db?useSSL=false&allowPublicKeyRetrieval=true
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
@@ -30,6 +33,5 @@ services:
         fromDatabase:
           name: foodshare-mysql
           property: password
-      # --- END FIX ---
       - key: JWT_SECRET_KEY
         sync: false # Set this value manually in the Render dashboard
