@@ -25,9 +25,12 @@ services:
         fromDatabase:
           name: foodshare-mysql
           property: password
+      
       - key: JWT_SECRET_KEY
-        sync: false
-      # --- ADD ALL OTHER ENV VARS ---
+        sync: false # Set in Render dashboard
+
+      # --- THIS IS THE FIX ---
+      # We removed the hardcoded password and will set it in Render
       - key: SPRING_MAIL_HOST
         value: smtp-relay.brevo.com
       - key: SPRING_MAIL_PORT
@@ -35,9 +38,11 @@ services:
       - key: SPRING_MAIL_USERNAME
         value: 9a20a6001@smtp-brevo.com
       - key: SPRING_MAIL_PASSWORD
-        value: xsmtpsib-145a886d3a03fc76c9661e6f76a728717d144691af3d0573731c7cbfdbdcddcf-5LewHP5z4XyRzXpe
+        sync: false # Set this value manually in the Render dashboard
       - key: SPRING_MAIL_FROM
         value: 2300033074cseh2@gmail.com
+      # --- END FIX ---
+
       - key: GOOGLE_CLIENT_ID
         sync: false # Set in Render dashboard
       - key: GOOGLE_CLIENT_SECRET
