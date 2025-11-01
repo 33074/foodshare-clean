@@ -18,11 +18,10 @@ services:
     plan: free # Use Render's free tier
     healthCheckPath: /actuator/health # Health check endpoint
     envVars: # Environment variables
+      # --- THIS IS THE FIX ---
       - key: SPRING_DATASOURCE_URL
-        # Use 'fromDatabase' to automatically get the internal connection URL
-        fromDatabase:
-          name: foodshare-mysql
-          property: internalConnectionString
+        # We build the JDBC URL manually, using the service name 'foodshare-mysql' as the host.
+        value: jdbc:mysql://foodshare-mysql:3306/foodshare_db?useSSL=false&allowPublicKeyRetrieval=true
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: foodshare-mysql
@@ -31,5 +30,6 @@ services:
         fromDatabase:
           name: foodshare-mysql
           property: password
+      # --- END FIX ---
       - key: JWT_SECRET_KEY
-        sync: false # Set this value manually in the Render dashboard for security
+        sync: false # Set this value manually in the Render dashboard
