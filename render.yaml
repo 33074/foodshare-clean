@@ -2,7 +2,7 @@
 
 # 1. Define the MySQL Database
 databases:
-  - name: foodshare-mysql # This is the logical name
+  - name: foodshare-mysql
     databaseName: foodshare_db
     user: foodshare_user
     plan: free 
@@ -10,7 +10,7 @@ databases:
 # 2. Define the Spring Boot Backend Web Service
 services:
   - type: web 
-    name: foodshare-backend # This is the logical name
+    name: foodshare-backend 
     runtime: docker 
     repo: https://github.com/33074/foodshare-clean.git 
     branch: main
@@ -20,11 +20,17 @@ services:
     healthCheckPath: /actuator/health
     envVars: 
       # --- THIS IS THE FIX ---
-      # We provide the database name, host, user, and password separately.
-      # Spring Boot's 'spring-boot-starter-data-jpa' is smart
-      # enough to assemble these *if* the main URL is not set.
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:mysql://${foodshare-mysql.host}:${foodshare-mysql.port}/${foodshare-mysql.database}?useSSL=false&allowPublicKeyRetrieval=true
+      # We provide the host, port, user, and password separately.
+      # Spring Boot will automatically build the JDBC URL from these.
+      # We are REMOVING the SPRING_DATASOURCE_URL key entirely.
+      - key: SPRING_DATASOURCE_HOST
+        fromDatabase:
+          name: foodshare-mysql
+          property: host
+      - key: SPRING_DATASOURCE_PORT
+        fromDatabase:
+          name: foodshare-mysql
+          property: port
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: foodshare-mysql
@@ -33,6 +39,13 @@ services:
         fromDatabase:
           name: foodshare-mysql
           property: password
+      # We also provide the database name and dialect
+      - key: SPRING_DATASOURCE_NAME
+        value: foodshare_db
+      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+        value: org.hibernate.dialect.MySQLDialect
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
       # --- END FIX ---
       - key: JWT_SECRET_KEY
         sync: false # Set this value manually in the Render dashboard
