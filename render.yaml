@@ -1,36 +1,22 @@
-# Defines the services for Render
-
-# 1. Define the MySQL Database
 databases:
   - name: foodshare-mysql
     databaseName: foodshare_db
     user: foodshare_user
-    plan: free 
+    plan: free
 
-# 2. Define the Spring Boot Backend Web Service
 services:
-  - type: web 
-    name: foodshare-backend 
-    runtime: docker 
-    repo: https://github.com/33074/foodshare-clean.git 
+  - type: web
+    name: foodshare-backend
+    runtime: docker
+    repo: https://github.com/33074/foodshare-clean.git
     branch: main
-    dockerContext: ./foodshare-backend 
-    dockerfilePath: ./foodshare-backend/Dockerfile 
+    dockerContext: ./foodshare-backend
+    dockerfilePath: ./foodshare-backend/Dockerfile
     plan: free
     healthCheckPath: /actuator/health
-    envVars: 
-      # --- THIS IS THE FIX ---
-      # We provide the host, port, user, and password separately.
-      # Spring Boot will automatically build the JDBC URL from these.
-      # We are REMOVING the SPRING_DATASOURCE_URL key entirely.
-      - key: SPRING_DATASOURCE_HOST
-        fromDatabase:
-          name: foodshare-mysql
-          property: host
-      - key: SPRING_DATASOURCE_PORT
-        fromDatabase:
-          name: foodshare-mysql
-          property: port
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://${foodshare-mysql.host}:${foodshare-mysql.port}/${foodshare-mysql.database}?useSSL=false&allowPublicKeyRetrieval=true
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: foodshare-mysql
@@ -39,13 +25,20 @@ services:
         fromDatabase:
           name: foodshare-mysql
           property: password
-      # We also provide the database name and dialect
-      - key: SPRING_DATASOURCE_NAME
-        value: foodshare_db
-      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
-        value: org.hibernate.dialect.MySQLDialect
-      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
-        value: update
-      # --- END FIX ---
       - key: JWT_SECRET_KEY
-        sync: false # Set this value manually in the Render dashboard
+        sync: false
+      # --- ADD ALL OTHER ENV VARS ---
+      - key: SPRING_MAIL_HOST
+        value: smtp-relay.brevo.com
+      - key: SPRING_MAIL_PORT
+        value: 587
+      - key: SPRING_MAIL_USERNAME
+        value: 9a20a6001@smtp-brevo.com
+      - key: SPRING_MAIL_PASSWORD
+        value: xsmtpsib-145a886d3a03fc76c9661e6f76a728717d144691af3d0573731c7cbfdbdcddcf-5LewHP5z4XyRzXpe
+      - key: SPRING_MAIL_FROM
+        value: 2300033074cseh2@gmail.com
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Set in Render dashboard
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false # Set in Render dashboard
