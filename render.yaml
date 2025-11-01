@@ -15,10 +15,10 @@ services:
     repo: https://github.com/33074/foodshare-clean.git
     branch: main
     # --- THIS IS THE FIX ---
-    # Set the build context to the backend's subfolder
+    # Set the build context so COPY commands inside Dockerfile work
     dockerContext: ./foodshare-backend 
-    # The Dockerfile path is now relative to the context
-    dockerfilePath: Dockerfile 
+    # Set the full path to the Dockerfile from the repo root
+    dockerfilePath: ./foodshare-backend/Dockerfile 
     # --- END FIX ---
     plan: free
     healthCheckPath: /actuator/health
