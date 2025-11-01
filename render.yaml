@@ -20,8 +20,9 @@ services:
     healthCheckPath: /actuator/health
     envVars: 
       # --- THIS IS THE FIX ---
-      # Manually build the JDBC URL using the other 'fromDatabase' properties.
-      # This is more reliable than 'internalConnectionString'.
+      # We provide the database name, host, user, and password separately.
+      # Spring Boot's 'spring-boot-starter-data-jpa' is smart
+      # enough to assemble these *if* the main URL is not set.
       - key: SPRING_DATASOURCE_URL
         value: jdbc:mysql://${foodshare-mysql.host}:${foodshare-mysql.port}/${foodshare-mysql.database}?useSSL=false&allowPublicKeyRetrieval=true
       - key: SPRING_DATASOURCE_USERNAME
