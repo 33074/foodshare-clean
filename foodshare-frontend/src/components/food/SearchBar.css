@@ -1,0 +1,31 @@
+.search-bar-form {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 50px; /* pill shape */
+  overflow: hidden;
+}
+
+.search-bar-input {
+  flex-grow: 1;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+}
+.search-bar-input:focus {
+  outline: none;
+}
+
+.search-bar-button {
+  border: none;
+  background-color: #2c8c5a;
+  color: white;
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.search-bar-button:hover {
+  background-color: #257a4e;
+}

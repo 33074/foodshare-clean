@@ -1,0 +1,4 @@
+
+# Ignore build files
+target/
+foodshare-backend/target/

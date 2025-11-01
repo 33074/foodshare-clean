@@ -1,0 +1,30 @@
+.browse-header {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.browse-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.browse-header p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/* --- NEW STYLES --- */
+.search-and-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto 2rem auto;
+}
+
+/* Make search bar take up most of the space */
+.search-bar-form {
+  flex-grow: 1;
+  margin: 0 1rem 0 0;
+}

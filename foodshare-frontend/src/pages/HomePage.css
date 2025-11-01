@@ -1,0 +1,125 @@
+/* Hero Section */
+.hero-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 60vh;
+  padding: 2rem;
+  color: white;
+  
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  
+  /* --- THIS IS THE FIX --- */
+  /* Remove border-radius and bottom margin */
+  /* border-radius: 12px; */
+  /* overflow: hidden; */
+  margin-bottom: 0;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Re-using button styles */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #257a4e;
+}
+
+.btn-secondary {
+  background-color: #f1f1f1;
+  color: #333;
+}
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* How It Works & Impact Sections */
+.how-it-works-section, .impact-section {
+  text-align: center;
+  margin-top: 3rem; /* Add margin-top here */
+  margin-bottom: 3rem;
+}
+
+.how-it-works-section h2, .impact-section h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.how-it-works-section > p, .impact-section > p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Cards */
+.steps-container, .stats-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.step-card {
+  flex-basis: 300px;
+  padding: 1.5rem;
+}
+.step-icon {
+  font-size: 3rem;
+}
+.step-card h3 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.stat-card {
+  flex-basis: 250px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+.stat-card h3 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+}
+.stat-card p {
+  font-size: 1.1rem;
+  margin: 0;
+}

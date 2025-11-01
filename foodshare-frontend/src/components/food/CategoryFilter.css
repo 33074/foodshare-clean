@@ -1,0 +1,9 @@
+.category-filter-dropdown select {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  min-width: 150px;
+}

@@ -1,0 +1,73 @@
+services:
+  # Frontend Service (React + Nginx)
+  frontend:
+    build:
+      context: ./foodshare-frontend
+      dockerfile: Dockerfile
+    container_name: foodshare-frontend-container
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - foodshare-network
+
+  # Backend Service (Spring Boot)
+  backend:
+    build:
+      context: ./foodshare-backend
+      dockerfile: Dockerfile
+    container_name: foodshare-backend-container
+    ports:
+      - "8086:8086"
+    environment:
+      # --- THIS IS THE FIX ---
+      # Changed hostname from 'database' to 'mysql' to match the service name
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foodshare_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      # --- END FIX ---
+      SPRING_DATASOURCE_USERNAME: foodshare_user
+      SPRING_DATASOURCE_PASSWORD: FoodShareUser_123!
+      JWT_SECRET_KEY: ZThkMDdjN2U5YzYwYTJmN2E3ZDY1YjY3ZGRmNzU3ZjA5YzgwYjM4YjAyYjM3MjI4YzI4OTM5M2M5YjIzYWU4NQ==
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - foodshare-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+
+  # Database Service (MySQL)
+  mysql:
+    image: mysql:8
+    container_name: foodshare-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234567890
+      MYSQL_DATABASE: foodshare_db
+      MYSQL_USER: foodshare_user
+      MYSQL_PASSWORD: FoodShareUser_123!
+    ports:
+      - "3306:3306" # Using 3306 host port as requested
+    networks:
+      - foodshare-network
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  foodshare-network:
+    driver: bridge
+
+volumes:
+  db-data:

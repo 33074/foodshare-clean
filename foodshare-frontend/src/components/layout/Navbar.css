@@ -1,0 +1,106 @@
+.navbar {
+  background-color: #fff;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: flex; /* Allow image and potential text to align */
+  align-items: center;
+}
+
+/* --- THIS IS THE FIX --- */
+/* Style for the new image logo */
+.logo-image {
+  height: 40px; /* Adjust size as needed */
+  width: auto;
+  margin-right: 5px; /* Space between logo and potential text (if you add text back) */
+}
+/* --- END FIX --- */
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-logout {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.btn-logout:hover {
+  color: var(--primary-color);
+}
+
+/* Common button styles from HomePage */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #257a4e;
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none; /* Hide navigation links on small screens for simplicity */
+  }
+  .navbar-container {
+    padding: 0 1rem;
+  }
+  .navbar-actions {
+    gap: 0.5rem;
+  }
+}
